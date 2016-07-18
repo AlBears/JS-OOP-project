@@ -1,17 +1,24 @@
 function onReady() {
 
-	var clock = new Clock('clock');
-	var clock2 = new Clock('clock2');
+	var clock = new Clock('clock', 180);
+	var clock2 = new Clock('clock2', 0, 'GMT');
+	var clock3 = new Clock('clock3', -240, 'NY');
 }
 
-function Clock(id) {
+function Clock(id, offset, label) {
+	label = label || '';
+	offset = offset || 0;
+	var d = new Date();
+	this.offset = (offset + d.getTimezoneOffset())*60*1000;
+
 	this.updateClock = function() {
 		var date = new Date();
+			date = new Date(this.offset + date.getTime());
 
 		var clock = document.getElementById(id);
 		clock.innerHTML = this.formatDigits(date.getHours()) + ':' + 
 		this.formatDigits(date.getMinutes()) + ':' + 
-		this.formatDigits(date.getSeconds());
+		this.formatDigits(date.getSeconds()) +' '+ label;
 	};
 
 	this.formatDigits = function(val) {
