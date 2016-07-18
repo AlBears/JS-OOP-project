@@ -1,12 +1,11 @@
 function onReady() {
 
-	var clock = createClock('clock');
-	var clock2 = createClock('clock2');
+	var clock = new Clock('clock');
+	var clock2 = new Clock('clock2');
 }
 
-function createClock(id) {
-	var c = {};
-	c.updateClock = function() {
+function Clock(id) {
+	this.updateClock = function() {
 		var date = new Date();
 
 		var clock = document.getElementById(id);
@@ -15,15 +14,15 @@ function createClock(id) {
 		this.formatDigits(date.getSeconds());
 	};
 
-	c.formatDigits = function(val) {
+	this.formatDigits = function(val) {
 	if (val < 10) val = "0" + val;
 	return val;
 	};
 
-	setInterval(function(){c.updateClock();}, 1000);
-	c.updateClock();
+	var that = this;
+	setInterval(function(){that.updateClock();}, 1000);
+	this.updateClock();
 
-	return c;
 }
 
 window.onload = onReady;
