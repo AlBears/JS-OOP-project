@@ -1,4 +1,5 @@
 function onReady() {
+	console.log('Loaded!');
 
 	var clock = new Clock('clock', 180);
 	var clock2 = new Clock('clock2', 0, 'GMT');
@@ -6,13 +7,29 @@ function onReady() {
 
 }
 
+Date.prototype.updateSeconds = function(){
+	this.setSeconds(this.getSeconds()+1);
+}
+
+Date.prototype.autoClock = function(isAuto){
+	clearInterval(this.clockInterval);
+	if(isAuto){
+		var that = this;
+		this.clockInterval = setInterval(function(){that.updateSeconds()},
+			1000);
+	}
+}
+
 function Clock(id, offset, label) {
 	label = label || '';
 	offset = offset || 0;
 	var d = new Date();
+	var offset = (offset + d.getTimezoneOffset()) * 60 * 1000;
+	this.d = new Date(offset+d.getTime());
+	this.d.autoClock(true);
 	this.id = id;
 	this.label = label;
-	this.offset = (offset + d.getTimezoneOffset()) * 60 * 1000;
+	
 
 	var that = this;
 	setInterval(function() {
@@ -23,9 +40,8 @@ function Clock(id, offset, label) {
 }
 
 Clock.prototype.updateClock = function() {
-	var date = new Date();
-	date = new Date(this.offset + date.getTime());
-
+	var date = this.d;
+		//date.updateSeconds();
 	var clock = document.getElementById(this.id);
 	clock.innerHTML = this.formatDigits(date.getHours()) + ':' +
 		this.formatDigits(date.getMinutes()) + ':' +
