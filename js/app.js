@@ -7,16 +7,34 @@ function onReady() {
 
 }
 
+Date.__interval = 0;
+Date.__aDates = [];
+Date.addToInterval = function (date){
+	//console.log(this.__interval);
+	this.__aDates.push(date);
+
+	if(!Date.__interval)
+		Date.__interval = setInterval(function(){Date.updateDates()},
+		 1000);
+}
+Date.updateDates = function(){
+	//console.log(this.__aDates.length);
+	for(var i = 0; i < this.__aDates.length; i++)
+		this.__aDates[i].updateSeconds();
+}
+
 Date.prototype.updateSeconds = function(){
 	this.setSeconds(this.getSeconds()+1);
 }
 
 Date.prototype.autoClock = function(isAuto){
-	clearInterval(this.clockInterval);
+	//clearInterval(this.clockInterval);
+
 	if(isAuto){
-		var that = this;
-		this.clockInterval = setInterval(function(){that.updateSeconds()},
-			1000);
+		// var that = this;
+		// this.clockInterval = setInterval(function(){that.updateSeconds()},
+		// 	1000);
+		Date.addToInterval(this);
 	}
 }
 
@@ -38,8 +56,9 @@ function Clock(id, offset, label) {
 	this.updateClock();
 
 }
-
+Clock.prototype.version = '1.00';
 Clock.prototype.updateClock = function() {
+	// console.log(this.version);
 	var date = this.d;
 		//date.updateSeconds();
 	var clock = document.getElementById(this.id);
