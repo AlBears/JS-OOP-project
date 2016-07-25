@@ -1,9 +1,9 @@
 function onReady() {
 	console.log('Loaded!');
 
-	var clock = new Clock('clock', 180);
-	var clock2 = new Clock('clock2', 0, 'GMT');
-	var clock3 = new Clock('clock3', -240, 'NY');
+	var clock = new com.app.Clock('clock', 180);
+	var clock2 = new com.app.Clock('clock2', 0, 'GMT');
+	var clock3 = new com.app.Clock('clock3', -240, 'NY');
 
 }
 
@@ -38,7 +38,10 @@ Date.prototype.autoClock = function(isAuto){
 	}
 }
 
-function Clock(id, offset, label) {
+var com = com || {};
+	com.app = com.app || {};
+
+com.app.Clock = function (id, offset, label) {
 	label = label || '';
 	offset = offset || 0;
 	var d = new Date();
@@ -56,8 +59,8 @@ function Clock(id, offset, label) {
 	this.updateClock();
 
 }
-Clock.prototype.version = '1.00';
-Clock.prototype.updateClock = function() {
+com.app.Clock.prototype.version = '1.00';
+com.app.Clock.prototype.updateClock = function() {
 	// console.log(this.version);
 	var date = this.d;
 		//date.updateSeconds();
@@ -67,7 +70,7 @@ Clock.prototype.updateClock = function() {
 		this.formatDigits(date.getSeconds()) + ' ' + this.label;
 };
 
-Clock.prototype.formatDigits = function(val) {
+com.app.Clock.prototype.formatDigits = function(val) {
 	if (val < 10) val = "0" + val;
 	return val;
 };
