@@ -2,9 +2,15 @@ function onReady() {
 	console.log('Loaded!');
 
 	var clock = new com.app.Clock('clock', 180);
-	var clock2 = new com.app.Clock('clock2', 0, 'GMT');
+	var clock2 = new com.app.TextClock('clock2', 0, 'GMT');
 	var clock3 = new com.app.Clock('clock3', -240, 'NY');
 
+	//LiveDate.call(clock, 1,2,3);
+	LiveDate.apply(clock, [1,2,3]);
+}
+
+function LiveDate(a,b,c){
+	console.log(this, a,b,c)
 }
 
 Date.__interval = 0;
@@ -75,4 +81,30 @@ com.app.Clock.prototype.formatDigits = function(val) {
 	return val;
 };
 
+com.app.TextClock = function(id, offset, label){
+	com.app.Clock.apply(this, arguments);
+}
+com.app.TextClock.prototype = Object.create(com.app.Clock.prototype);
+com.app.TextClock.prototype.constructor = com.app.TextClock;
+
 window.onload = onReady;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
