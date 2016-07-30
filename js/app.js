@@ -71,10 +71,15 @@ com.app.Clock.prototype.updateClock = function() {
 	var date = this.d;
 		//date.updateSeconds();
 	var clock = document.getElementById(this.id);
-	clock.innerHTML = this.formatDigits(date.getHours()) + ':' +
-		this.formatDigits(date.getMinutes()) + ':' +
-		this.formatDigits(date.getSeconds()) + ' ' + this.label;
+	clock.innerHTML = this.formatOutput(date.getHours(),
+		date.getMinutes(),date.getSeconds(), this.label);
 };
+com.app.Clock.prototype.formatOutput = function(h,m,s,label){
+
+	return this.formatDigits(h) + ':' +
+		this.formatDigits(m) + ':' +
+		this.formatDigits(s) + ' ' + label;
+}
 
 com.app.Clock.prototype.formatDigits = function(val) {
 	if (val < 10) val = "0" + val;
@@ -83,10 +88,18 @@ com.app.Clock.prototype.formatDigits = function(val) {
 
 com.app.TextClock = function(id, offset, label){
 	com.app.Clock.apply(this, arguments);
+	console.log(this.version);
 }
 com.app.TextClock.prototype = createObject(com.app.Clock.prototype, com.app.TextClock);
 //com.app.TextClock.prototype.constructor = com.app.TextClock;
+com.app.TextClock.prototype.formatOutput = function(h,m,s,label){
 
+	return this.formatDigits(h) + ' Hours ' +
+		this.formatDigits(m) + ' Minutes ' +
+		this.formatDigits(s) + ' Seconds ' + label;
+}
+com.app.TextClock.prototype.version = '1.01';
+//use this instead object.create
 function createObject(proto, cons){
 	function c(){}
 	c.prototype = proto;
