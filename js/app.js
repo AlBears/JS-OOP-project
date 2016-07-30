@@ -10,7 +10,7 @@ function onReady() {
 }
 
 function LiveDate(a,b,c){
-	console.log(this, a,b,c)
+	//console.log(this, a,b,c)
 }
 
 Date.__interval = 0;
@@ -84,8 +84,15 @@ com.app.Clock.prototype.formatDigits = function(val) {
 com.app.TextClock = function(id, offset, label){
 	com.app.Clock.apply(this, arguments);
 }
-com.app.TextClock.prototype = Object.create(com.app.Clock.prototype);
-com.app.TextClock.prototype.constructor = com.app.TextClock;
+com.app.TextClock.prototype = createObject(com.app.Clock.prototype, com.app.TextClock);
+//com.app.TextClock.prototype.constructor = com.app.TextClock;
+
+function createObject(proto, cons){
+	function c(){}
+	c.prototype = proto;
+	c.prototype.constructor = cons;
+	return new c();
+}
 
 window.onload = onReady;
 
