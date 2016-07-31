@@ -107,19 +107,24 @@ com.app.TextClock.prototype.formatOutput = function(h,m,s,label){
 }
 com.app.TextClock.prototype.version = '1.01';
 
-com.app.AlarmClock = function(id, offset, label,almH,almM){
+com.app.AlarmClock = function(id, offset, label){
 	com.app.Clock.apply(this, arguments);
-	this.almH = almH;
-	this.almM = almM;
+	
 	console.log(this.version);
 
 	this.dom = document.getElementById(id);
 	this.dom.contentEditable = true;
 	var that = this;
 	this.dom.addEventListener('focus', function(e){
+		this.innerHTML = this.innerHTML.slice(0, this.innerHTML.lastIndexOf(':'));
 		that.tick(false);
 	});
 	this.dom.addEventListener('blur', function(e){
+		var a = this.innerHTML.split(':');
+		console.log(a);
+		that.almH = parseInt(a[0]);
+	    that.almM = parseInt(a[1]);
+	    console.log(that.almH, that.almM);
 		that.tick(true);
 	});
 }
@@ -136,9 +141,6 @@ com.app.AlarmClock.prototype.formatOutput = function(h,m,s,label){
 		}
 		return output;
 }
-
-
-
 
 //use this instead object.create
 function createObject(proto, cons){
