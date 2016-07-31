@@ -3,7 +3,7 @@ function onReady() {
 
 	var clock = new com.app.Clock('clock', 180);
 	var clock2 = new com.app.TextClock('clock2', 0, 'GMT');
-	var clock3 = new com.app.Clock('clock3', -240, 'NY');
+	var clock3 = new com.app.AlarmClock('clock3', -240, 'NY', 08, 57);
 
 	//LiveDate.call(clock, 1,2,3);
 	LiveDate.apply(clock, [1,2,3]);
@@ -99,6 +99,32 @@ com.app.TextClock.prototype.formatOutput = function(h,m,s,label){
 		this.formatDigits(s) + ' Seconds ' + label;
 }
 com.app.TextClock.prototype.version = '1.01';
+
+com.app.AlarmClock = function(id, offset, label,almH,almM){
+	com.app.TextClock.apply(this, arguments);
+	this.almH = almH;
+	this.almM = almM;
+	console.log(this.version);
+}
+com.app.AlarmClock.prototype = createObject(com.app.TextClock.prototype, com.app.AlarmClock);
+com.app.AlarmClock.prototype.formatOutput = function(h,m,s,label){
+	var output;
+	if(h==this.almH && m==this.almM){ 
+		
+		output = 'ALARM WAKE UP';
+		var snd = new Audio('art/beep.mp3');
+		snd.play();
+	}else { 
+		output = this.formatDigits(h) + ' Hours ' +
+			this.formatDigits(m) + ' Minutes ' +
+			this.formatDigits(s) + ' Seconds ' + label;
+		}
+		return output;
+}
+
+
+
+
 //use this instead object.create
 function createObject(proto, cons){
 	function c(){}
