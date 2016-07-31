@@ -55,15 +55,22 @@ com.app.Clock = function (id, offset, label) {
 	this.d = new Date(offset+d.getTime());
 	this.d.autoClock(true);
 	this.id = id;
-	this.label = label;
-	
+	this.label = label;	
 
+	this.tick(true);
+
+}
+com.app.Clock.prototype.tick = function(isTick){
+	clearInterval(this.myInternalInterval);
+	
+	if(isTick){ 
 	var that = this;
-	setInterval(function() {
+	this.myInternalInterval = setInterval(function() {
 		that.updateClock();
 	}, 1000);
 	this.updateClock();
-
+	}
+	
 }
 com.app.Clock.prototype.version = '1.00';
 com.app.Clock.prototype.updateClock = function() {
@@ -108,6 +115,13 @@ com.app.AlarmClock = function(id, offset, label,almH,almM){
 
 	this.dom = document.getElementById(id);
 	this.dom.contentEditable = true;
+	var that = this;
+	this.dom.addEventListener('focus', function(e){
+		that.tick(false);
+	});
+	this.dom.addEventListener('blur', function(e){
+		that.tick(true);
+	});
 }
 com.app.AlarmClock.prototype = createObject(com.app.Clock.prototype, com.app.AlarmClock);
 com.app.AlarmClock.prototype.formatOutput = function(h,m,s,label){
