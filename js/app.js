@@ -124,9 +124,19 @@ com.app.AlarmClock = function(id, offset, label){
 		console.log(a);
 		that.almH = parseInt(a[0]);
 	    that.almM = parseInt(a[1]);
+	    if((that.almH >= 0 && that.almH < 24) &&
+	    	(that.almM >= 0 && that.almM < 60)){
+	    	var event = new Event('restart_tick');
+	    	this.dispatchEvent(event);
+	    }
+
 	    console.log(that.almH, that.almM);
 		that.tick(true);
 	});
+
+	this.dom.addEventListener('restart_tick', function(){
+		that.tick(true);
+	})
 }
 com.app.AlarmClock.prototype = createObject(com.app.Clock.prototype, com.app.AlarmClock);
 com.app.AlarmClock.prototype.formatOutput = function(h,m,s,label){
